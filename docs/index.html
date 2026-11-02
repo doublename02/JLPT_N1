@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer"><meta name="theme-color" content="#365846"><meta name="description" content="言の葉 N1。中日対訳で学ぶ文字・語彙・文法と、読解・聴解のオリジナル模擬試験。毎日の学びを、確かな力に。">
+  <title>言の葉 N1 — 毎日の学びを、確かな力に。</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#home"><span class="brand-mark">葉</span><span>言の葉 <b>N1</b><small>日本語学習室</small></span></a>
+    <div class="nav-caption">マイラーニング</div>
+    <nav aria-label="メインナビゲーション" id="main-nav"></nav>
+    <div class="sidebar-bottom"><div class="small-leaf">✧</div><p>ひとつずつ、<br>ことばを自分のものに。</p><a href="#about">この学習室について <span>↗</span></a><div class="profile"><span class="avatar">学</span><div><button class="text-link" id="github-profile">GitHubに接続する</button><small>自分の学びを、自分のGitHubに。</small></div></div></div>
+  </aside>
+  <div class="page-shell">
+    <header class="topbar"><div class="breadcrumb"><button class="mobile-menu icon-button" aria-label="メニューを開く" id="menu-toggle">☰</button><span>学習室</span><span class="slash">/</span><b id="page-name">ホーム</b></div><button class="search-launch" id="open-search"><span id="search-icon"></span><span>学びたいことばを検索</span><kbd>Ctrl K</kbd></button><button class="cloud-status-button" id="github-account">GitHubで学習記録を同期</button><a class="header-help" href="#about" aria-label="使い方">?</a></header>
+    <main id="main" tabindex="-1"></main>
+    <footer>言の葉 N1 <span>毎日の学びを、確かな力に。</span><a href="#about">収録範囲・試験について</a></footer>
+  </div>
+  <dialog id="search-dialog" class="search-dialog"><form method="dialog"><button class="dialog-close" aria-label="閉じる">×</button></form><label for="global-search">ことば・文型を探す</label><input id="global-search" placeholder="日本語・読み方・中国語で検索" autocomplete="off"><div id="search-results"></div></dialog>
+  <dialog id="study-dialog" class="study-dialog"></dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog"></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="knowledge.js"></script><script src="grammar-expansion.js"></script><script src="vocab-expansion-a.js"></script><script src="vocab-expansion-b.js"></script><script src="kanji-expansion.js"></script><script src="vocab-expansion-c.js"></script><script src="vocab-expansion-d.js"></script><script src="kanji-expansion-2.js"></script><script src="grammar-comparisons.js"></script><script src="collocations.js"></script><script src="exams.js"></script><script src="language.js"></script><script src="github-config.js"></script><script src="sync-model.js"></script><script src="github-sync.js"></script><script src="app.js"></script>
+</body>
+</html>

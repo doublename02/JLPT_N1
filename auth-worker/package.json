@@ -1,0 +1,1 @@
+{"name":"kotonoha-n1-auth","private":true,"type":"module","scripts":{"deploy":"wrangler deploy","dev":"wrangler dev","test":"node --test test/*.test.mjs"},"devDependencies":{"wrangler":"^4.0.0"}}

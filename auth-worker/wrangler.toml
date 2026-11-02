@@ -1,0 +1,9 @@
+name = "kotonoha-n1-auth"
+main = "src/index.js"
+compatibility_date = "2026-11-02"
+
+[vars]
+APP_URL = "https://doublename02.github.io/JLPT_N1/"
+# GITHUB_CLIENT_ID is a public identifier. Set it here or in the Worker dashboard.
+GITHUB_CLIENT_ID = ""
+# Set GITHUB_CLIENT_SECRET with `wrangler secret put GITHUB_CLIENT_SECRET`.
