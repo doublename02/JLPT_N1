@@ -5,5 +5,5 @@ compatibility_date = "2026-11-02"
 [vars]
 APP_URL = "https://doublename02.github.io/JLPT_N1/"
 # GITHUB_CLIENT_ID is a public identifier. Set it here or in the Worker dashboard.
-GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_ID = "Ov23lijsGZ4TZ2THuiyp"
 # Set GITHUB_CLIENT_SECRET with `wrangler secret put GITHUB_CLIENT_SECRET`.

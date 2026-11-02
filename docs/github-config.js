@@ -3,5 +3,5 @@ window.KOTONOHA_GITHUB={
   upstream:'doublename02/JLPT_N1',
   dataRepository:'JLPT_N1-study-data',
   authBaseUrl:'',
-  clientId:''
+  clientId:'Ov23lijsGZ4TZ2THuiyp'
 };
