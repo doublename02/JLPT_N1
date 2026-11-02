@@ -28,14 +28,14 @@ const ids=new Set();
 for(const type of ['kanji','vocab','grammar']){
   const data=w.KNOWLEDGE[type];counts[type]=data.length;
   assert.equal(new Set(data.map(x=>x.title.normalize('NFKC'))).size,data.length,`Duplicate ${type} titles`);
-  for(const x of data){for(const key of ['id','title','reading','category','jp','zh','example','translation']){assert.equal(typeof x[key],'string',`${type} ${x.id} ${key}`);assert(x[key].trim().length>0,`Empty ${type} ${x.id} ${key}`);}assert(!ids.has(x.id));ids.add(x.id);assert(x.example.length>=6);assert(x.translation.length>=3);assert(/\p{Script=Han}/u.test(x.zh));if(type==='kanji')assert.equal([...x.title].length,1,`Not one kanji ${x.id}`);}
+  for(const x of data){for(const key of ['id','title','reading','category','jp','example']){assert.equal(typeof x[key],'string',`${type} ${x.id} ${key}`);assert(x[key].trim().length>0,`Empty ${type} ${x.id} ${key}`);}assert(!ids.has(x.id));ids.add(x.id);assert(x.example.length>=6);assert(!('zh' in x));assert(!('translation' in x));if(type==='kanji')assert.equal([...x.title].length,1,`Not one kanji ${x.id}`);}
 }
 assert(api.allKnowledge().length>=2200,'Expanded collection must exceed 2200 cards');
 assert(w.KNOWLEDGE.grammar.some(x=>x.focus==='関連文法'));
 const simpleGrammarTitles=new Set(w.KNOWLEDGE.grammar.map(x=>x.title.replaceAll('〜','')));
 for(const card of w.KNOWLEDGE.vocab)assert(!simpleGrammarTitles.has(card.title),`Grammar-only duplicate in vocabulary: ${card.title}`);
 const expected=[['reading',w.EXAMS.reading,26],['listening',w.EXAMS.listening,30],['language',w.LANGUAGE_EXAM,45]];
-for(const [name,questions,count] of expected){counts[name]=questions.length;assert.equal(questions.length,count);for(const q of questions){assert(!ids.has(q.id));ids.add(q.id);assert.equal(typeof q.question,'string');assert(q.options.length>=3&&q.options.length<=4);assert.equal(new Set(q.options).size,q.options.length);assert(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);assert(q.explanation.length>10);assert(q.zh.length>5);if(name==='reading')assert(q.passage.length>=140);if(name==='listening')assert(q.script.length>20);}}
+for(const [name,questions,count] of expected){counts[name]=questions.length;assert.equal(questions.length,count);for(const q of questions){assert(!ids.has(q.id));ids.add(q.id);assert.equal(typeof q.question,'string');assert(q.options.length>=3&&q.options.length<=4);assert.equal(new Set(q.options).size,q.options.length);assert(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);assert(q.explanation.length>10);if(name==='language')assert(!('zh' in q));else assert(q.zh.length>5);if(name==='reading')assert(q.passage.length>=140);if(name==='listening')assert(q.script.length>20);}}
 assert.deepEqual(w.EXAMS.reading.reduce((a,q)=>(a[q.category]=(a[q.category]||0)+1,a),{}),{'内容理解（短文）':4,'内容理解（中文）':9,'内容理解（長文）':4,'統合理解':3,'主張理解（長文）':4,'情報検索':2});
 assert.deepEqual(w.EXAMS.listening.reduce((a,q)=>(a[q.category]=(a[q.category]||0)+1,a),{}),{'課題理解':5,'ポイント理解':6,'概要理解':5,'即時応答':11,'統合理解':3});
 for(const type of ['kanji','vocab','grammar'])api.renderCatalog(type);
@@ -62,5 +62,5 @@ api.startExam('mistakes',api.memory.mistakes.map(m=>m.question));for(const q of 
 api.startExam('listening');api.memory.active.answers.l1=2;api.record('g1');
 const resumed=makeApp(app.getStorage());assert.equal(resumed.api.memory.active.mode,'listening');assert.equal(resumed.api.memory.active.answers.l1,2);assert.equal(resumed.api.sectionData().length,30);
 resumed.api.memory.active.deadline=Date.now()-1000;resumed.intervals[0]();assert.equal(resumed.api.memory.active,null);assert.equal(resumed.api.memory.history[0].total,30);
-const report={counts,checks:['content schemas and unique IDs','official indicative counts','all catalog and dashboard renders','two-stage full mock and answer locking','correct/wrong/unanswered grading','mistake removal after retry','persisted exam reload','deadline expiry auto-submit','answer and bilingual explanation review'],status:'passed'};
+const report={counts,checks:['content schemas and unique IDs','official indicative counts','all catalog and dashboard renders','two-stage full mock and answer locking','correct/wrong/unanswered grading','mistake removal after retry','persisted exam reload','deadline expiry auto-submit','answer and explanation review'],status:'passed'};
 console.log(JSON.stringify(report,null,2));

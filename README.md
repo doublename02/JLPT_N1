@@ -1,74 +1,81 @@
-# 言の葉 N1 — GitHub Pages 版
+# 言の葉 N1
 
-网站：[https://doublename02.github.io/JLPT_N1/](https://doublename02.github.io/JLPT_N1/)
+日本語で学ぶ、JLPT N1対策の学習サイト。
 
-全日文界面，含 2,278 张中日双语知识卡、日文例句、101 道原创模考题、计时考试、个人笔记及学习记录。
+**[学習サイトを開く](https://doublename02.github.io/JLPT_N1/)**
 
-## 部署结构
+日本語 · [English](README.en.md) · [简体中文](README.zh-CN.md)
 
-- `docs/`：GitHub Pages 静态网站。Pages 设置为从 `main` 分支的 `/docs` 发布；包含 `.nojekyll`，无需构建。
-- `auth-worker/`：GitHub OAuth 授权码交换服务，可部署到 Cloudflare Workers。它只交换授权码，不保存笔记、学习记录或用户令牌。
-- 根目录的 `wrangler.toml` 同样指向登录服务，Worker 名称与实际部署 `jlpt-n1` 一致。因此 Cloudflare 的 Root directory 留空或设为 `auth-worker` 均可部署登录服务，部署命令使用 `npm run deploy`。如果构建环境中配置了 `GITHUB_CLIENT_SECRET`，部署脚本会通过标准输入把它安全写入 Worker 运行时；不会写入命令参数、文件或日志。也可以直接在 Worker 的运行时设置中配置该密钥。不要添加 `--assets docs`，学习网站已由 GitHub Pages 发布。
-- `test/`、`validate.mjs`：数据合并、GitHub 同步、账号隔离、授权校验及原有模考功能检查。
+## 学べること
 
-网站学习功能不要求登录。标准 GitHub OAuth 登录需要配置自己的 OAuth App 和回调服务；未配置时页面会明确显示“管理者の設定待ち”。也提供用户自行输入限定访问令牌的高级连接方式，不使用他人的 OAuth Client ID 代替自己的应用。
+| コース | 収録内容 |
+| --- | --- |
+| 文字 | 630項目。漢字の読み・意味・熟語、日本語解説と例文 |
+| 語彙 | 1,398項目。単語・連語・慣用表現、日本語解説と例文 |
+| 文法 | 250項目。接続・ニュアンス・文型比較、日本語解説と例文 |
+| 読解 | オリジナル模擬問題26問、選択式の解答と提出後の解説 |
+| 聴解 | オリジナル模擬問題30問、端末の日本語合成音声と提出後の解説 |
 
-## 个人数据保存方式
+文字・語彙・文法の知識カードは日本語のみで学ぶ構成です。読解・聴解には日本語と中国語の解説があります。文字・語彙・文法45問を加えた全101問の模擬試験、しおり、習得記録、個人メモ、バックアップ、JSON教材の追加に対応します。
 
-默认推荐：用户连接 GitHub 后，在自己的账户中创建 **私有** `JLPT_N1-study-data` 仓库，只保存个人数据。不会复制教材代码。已经存在同名公开仓库时会停止，绝不自动将私人笔记写入公开仓库。
+通し模試は文字・語彙・文法・読解を合わせて110分、聴解を55分で計時し、時間切れで自動提出されます。進行中の試験は現在の端末に保存し、提出済みの結果を同期します。
 
-可选：把 `doublename02/JLPT_N1` fork 到自己的账户，在 Fork 的 `.kotonoha/profile-v2.json` 中保存。用户必须明确选择公开模式，界面会说明 **笔记、进度和 Git 历史均可被他人读取**。网站原作者不能 fork 自己的仓库，需使用私有学习仓库。
+本教材は独自の練習教材で、公式の過去問ではありません。JLPTは漢字・語彙・文法の網羅リストを公開しておらず、2,278項目は全出題範囲の保証ではありません。項目数には連語と文型比較も含みます。音声は合成音声であり、正答率を公式の尺度得点や合否へ換算することはできません。詳しくは [CONTENT.md](CONTENT.md) を参照してください。
 
-数据文件固定为 `.kotonoha/profile-v2.json`，包括：
+## GitHubに学習記録を保存する
 
-- 已掌握的知识、收藏、个人笔记与最近修改版本。
-- 每天的学习足迹、已提交的试卷结果、错题及用户自行增加的教材。
-- 不含 GitHub 令牌、OAuth Secret 或私钥。
+ログインせずに学習できます。任意のGitHub連携では保存先を選べます。
 
-每次修改先立即保存到本机，再在约 15 秒无新修改后提交 GitHub。点击“メモを保存”或“今すぐ同期”会立即同步。进行中的计时试卷留在当前设备，交卷结果才同步；避免另一设备的保存中断正在播放的听力和考试。
+- **非公開の学習用リポジトリ（既定）**：自分のアカウントに `JLPT_N1-study-data` を作成し、個人データだけを保存します。同名の公開リポジトリがある場合は保存を停止します。
+- **公開Fork**：自分のアカウントにサイトをForkして保存します。メモ・進度・Gitの履歴は誰でも読めます。サイトの所有者は自分のリポジトリをForkできないため、非公開方式を利用してください。
 
-使用每项修改时间和设备标记合并记录，删除掌握状态/收藏会同步删除标记。笔记保留最近修改版本，可在卡片中查看与恢复；同一条笔记同时编辑时显示确定的最新版本，另一个文本仍保留在最近版本中。GitHub SHA 冲突会重新读取并合并，最多重试三次。断网、权限不足、私有仓库变成公开、容量超过 4MB 时会停止上传并保留端末记录。
+保存先は `.kotonoha/profile-v2.json` です。習得・しおり・メモと最近の版、学習記録、提出済みの試験結果、間違えた問題、追加教材を含み、トークンやOAuth Secretは含みません。
 
-不同 GitHub 用户使用不同的本地缓存；未登录记录不会自动上传到任何账户，需用户点击“未ログイン時の記録を取り込む”。访问令牌仅保存在当前页面的内存中，刷新或退出后需要重新连接。缓存记录不会因退出登录被删除。GitHub 本身的 Git 历史仍可能保留旧文本，删除笔记不等于清除 Git 历史。
+変更は端末に即時保存され、最後の変更から約15秒後にGitHubへ送信されます。「メモを保存」「今すぐ同期」は即時同期します。複数端末の変更は項目ごとの日時と端末識別子で統合し、削除状態も同期します。同時編集されたメモの別の本文は最近の版に残ります。保存競合時は再取得・統合して最大3回再試行します。
 
-## 配置标准 GitHub OAuth 登录
+オフライン、権限不足、保存先の公開化、4MBの上限超過では送信を止め、端末の記録を保持します。アカウントごとに端末内データを分け、未ログイン時の記録は明示的に取り込むまでアップロードしません。トークンはページのメモリー内にのみ保持し、再読み込み後は再接続が必要です。メモを削除してもGitの過去の履歴は消えません。
 
-此实现使用 **GitHub OAuth App** 的授权码流程和 PKCE。GitHub App 的安装流程及权限与 OAuth App 不同，不应直接把 GitHub App ID 当作本配置使用。
+## 配置と開発
 
-1. 在 [GitHub Developer Settings](https://github.com/settings/developers) 配置 OAuth App：
-   - Homepage URL：`https://doublename02.github.io/JLPT_N1/`
-   - Authorization callback URL：`https://doublename02.github.io/JLPT_N1/`
-   - 关闭该回调地址的 wildcard matching；不需要 Device Flow。
-2. `auth-worker/wrangler.toml` 的 `APP_URL` 必须与上面的回调地址完全相同。填入公开的 `GITHUB_CLIENT_ID`。
-3. 在 `auth-worker/` 执行 `npm install`，登录自己的 Cloudflare，然后执行 `npx wrangler secret put GITHUB_CLIENT_SECRET`，按提示在本机输入 Secret。**不要把 Secret 写到仓库、网页脚本、聊天或提交记录中。**
-4. 执行 `npx wrangler deploy`，取得实际 Worker HTTPS 地址。
-5. 编辑 `docs/github-config.js`：将 `authBaseUrl` 设为实际 Worker 地址，`clientId` 设为公开 Client ID。提交到 GitHub 后 Pages 会更新。
-6. 用测试 GitHub 账号完成登录，在自己的私有学习仓库保存一条笔记，再换设备登录确认能读回。当前仓库的自动测试验证交换与同步协议；正式 OAuth 必须在真实 App/Worker 凭据配置后验收。
+| パス | 用途 |
+| --- | --- |
+| `docs/` | GitHub Pagesの静的サイト。`main` の `/docs` から公開 |
+| `auth-worker/` | Cloudflare WorkersのOAuthコード交換サービス |
+| `wrangler.toml` | ルートからも同じログインサービスを配置する設定 |
+| `test/`・`auth-worker/test/`・`validate.mjs` | 同期・認証・教材・試験の検証 |
 
-标准 OAuth 的私有仓库模式请求 `repo` 权限，公开 Fork 模式请求 `public_repo` 权限。GitHub OAuth 的 `repo` 权限本身较宽，本应用代码仅操作用户自己的固定学习仓库。如希望在 GitHub 侧严格限定单个仓库，请使用下述限定令牌方式。
-
-### 限定令牌方式
-
-用户先创建自己的私有 `JLPT_N1-study-data` 仓库并创建初始提交，再在 [Fine-grained personal access tokens](https://github.com/settings/personal-access-tokens/new) 中仅选择该仓库，允许 Contents 读写。网站“GitHub 同期 → 詳細設定”支持输入该令牌并验证 GitHub 身份。它不是标准 OAuth 一键登录的替代部署凭据，不应让用户把令牌提交给管理员。
-
-## 从原网站迁移进度
-
-浏览器不会跨域共享本地记录。请在原网站的“学習記録”导出备份，在本网站恢复，再连接自己的 GitHub 并选择导入未登录记录。原有知识卡 ID 保持不变。
-
-## 开发与验证
-
-需要 Node.js 22 或更新版本。测试无额外依赖：
+Node.js 22以降が必要です。テスト自体には追加依存関係がありません。
 
 ```sh
 npm test
+npm run preview
 ```
 
-本地预览：`python -m http.server 4173 --directory docs`。
+プレビューはPythonのHTTPサーバーを使用し、`http://localhost:4173` で開けます。GitHub Pagesはビルド不要です。
 
-知识库范围说明见 [CONTENT.md](CONTENT.md)。全部题目为原创练习，听力为端末日语合成语音，非官方真题或真人录音。知识卡数量包含搭配与辨析，不代表全部 N1 考点。
+## OAuthログインの設定
 
-## 官方参考
+この実装は **GitHub OAuth App** の認可コードフローとPKCEを使用します。GitHub AppのIDとは異なります。
 
-- [GitHub OAuth 授权流程](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
-- [GitHub 文件读写 API](https://docs.github.com/en/rest/repos/contents)
-- [GitHub Pages 发布设置](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+1. [GitHub Developer Settings](https://github.com/settings/developers) でOAuth Appを作成します。現在のサイトではHomepage URLとAuthorization callback URLをともに `https://doublename02.github.io/JLPT_N1/` に設定します。別の場所に公開する場合は、そのサイトのURLに置き換えてください。
+2. `auth-worker/wrangler.toml` とルートの `wrangler.toml` の `APP_URL` をコールバックURLに合わせ、公開の `GITHUB_CLIENT_ID` とWorker名を設定します。
+3. `auth-worker/` で `npm install` を実行してCloudflareにログインし、`npx wrangler secret put GITHUB_CLIENT_SECRET` でSecretを登録します。Secretをリポジトリ、ブラウザースクリプト、チャット、ログに書かないでください。
+4. `npm run deploy` で配置します。CloudflareのGit連携ではRoot directoryを `auth-worker`、Deploy commandを `npm run deploy` にできます。ルートからの配置にも対応します。構築環境に `GITHUB_CLIENT_SECRET` があれば、配置スクリプトが標準入力で実行環境に登録し、引数やファイルには書きません。静的サイトはPagesで公開するため、`--assets docs` は追加しません。
+5. `docs/github-config.js` の `authBaseUrl` をWorkerのHTTPS URL、`clientId` を公開Client IDに設定してコミットします。現在の接続先は `https://jlpt-n1.akiracheah12.workers.dev` です。
+6. 実際のアカウントで認可し、メモの保存と別端末からの読み込みを確認します。自動テストでは実際のアカウントへの認可・書き込みは行いません。
+
+非公開方式のOAuthスコープは `repo`、公開Fork方式は `public_repo` です。OAuthの `repo` は広い権限ですが、アプリの実装は本人の学習用保存先だけを操作します。
+
+### 限定トークンで接続する
+
+GitHub側でも単一リポジトリに制限したい場合は、自分の非公開 `JLPT_N1-study-data` リポジトリを初期コミット付きで作成します。[Fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) でそのリポジトリだけを選択し、Contentsの読み書きを許可してください。サイトの「GitHub 同期 → 詳細設定」で入力します。管理者にトークンを送る必要はありません。
+
+## 以前のサイトから移行する
+
+ブラウザーの記録はドメイン間で共有されません。以前のサイトの「学習記録」でバックアップを出力し、このサイトで復元します。その後GitHubに接続し、未ログイン時の記録を取り込んでください。既存の知識カードIDは維持しています。
+
+## 参考資料
+
+- [GitHub OAuthの認可フロー](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
+- [GitHub Contents API](https://docs.github.com/en/rest/repos/contents)
+- [GitHub Pagesの公開設定](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
