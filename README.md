@@ -8,7 +8,7 @@
 
 - `docs/`：GitHub Pages 静态网站。Pages 设置为从 `main` 分支的 `/docs` 发布；包含 `.nojekyll`，无需构建。
 - `auth-worker/`：GitHub OAuth 授权码交换服务，可部署到 Cloudflare Workers。它只交换授权码，不保存笔记、学习记录或用户令牌。
-- 根目录的 `wrangler.toml` 同样指向登录服务，Worker 名称与实际部署 `jlpt-n1` 一致。因此 Cloudflare 的 Root directory 留空或设为 `auth-worker` 均可部署登录服务，部署命令使用 `npx wrangler deploy`。不要添加 `--assets docs`，学习网站已由 GitHub Pages 发布。
+- 根目录的 `wrangler.toml` 同样指向登录服务，Worker 名称与实际部署 `jlpt-n1` 一致。因此 Cloudflare 的 Root directory 留空或设为 `auth-worker` 均可部署登录服务，部署命令使用 `npm run deploy`。如果构建环境中配置了 `GITHUB_CLIENT_SECRET`，部署脚本会通过标准输入把它安全写入 Worker 运行时；不会写入命令参数、文件或日志。也可以直接在 Worker 的运行时设置中配置该密钥。不要添加 `--assets docs`，学习网站已由 GitHub Pages 发布。
 - `test/`、`validate.mjs`：数据合并、GitHub 同步、账号隔离、授权校验及原有模考功能检查。
 
 网站学习功能不要求登录。标准 GitHub OAuth 登录需要配置自己的 OAuth App 和回调服务；未配置时页面会明确显示“管理者の設定待ち”。也提供用户自行输入限定访问令牌的高级连接方式，不使用他人的 OAuth Client ID 代替自己的应用。
