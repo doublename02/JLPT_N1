@@ -1,1 +1,1 @@
-{"name":"kotonoha-n1","private":true,"version":"1.0.0","scripts":{"test":"node --test test/*.test.cjs auth-worker/test/*.test.mjs && node validate.mjs","preview":"python -m http.server 4173 --directory docs"},"engines":{"node":">=22"}}
+{"name":"kotonoha-n1","private":true,"version":"1.0.0","scripts":{"test":"node --test test/*.test.cjs auth-worker/test/*.test.mjs && node validate.mjs","preview":"python -m http.server 4173 --directory docs","deploy":"wrangler deploy"},"engines":{"node":">=22"},"devDependencies":{"wrangler":"^4.0.0"}}
